@@ -13,7 +13,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.plot_graph)
         self.plot_graph.setBackground("black")
         self.plot_graph.setTitle("Depth vs Time", color="b", size="20pt")
-        styles = {"color": "red", "font-size": "18px"}
+        styles = {"color": "red", "font-size": "25px"}
         self.plot_graph.setLabel("left", "Depth (m)", **styles)
         self.plot_graph.setLabel("bottom", "Time (sec)", **styles)
 
@@ -25,6 +25,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.plot_graph.invertY(True)
         self.plot_graph.addLegend()
         self.plot_graph.showGrid(x=True, y=True)
+
 
         # Initialize the plot updater
         self.plot_updater = PlotUpdater(self.plot_graph)

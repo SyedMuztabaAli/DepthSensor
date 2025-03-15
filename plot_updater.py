@@ -1,5 +1,5 @@
 import pyqtgraph as pg
-from PyQt5 import QtGui
+from PyQt5 import QtGui,QtCore
 
 class PlotUpdater:
     def __init__(self, plot_graph):
@@ -32,6 +32,14 @@ class PlotUpdater:
         )
         self.plot_graph.addItem(self.muddy_fill)
 
+        self.fixed_distance = 5  # Fixed distance from y=0
+        self.above_zero_line = pg.InfiniteLine(
+            pos=-self.fixed_distance,  # Position the line at y=-5 (above y=0 due to inverted y-axis)
+            angle=0,  # Horizontal line
+            pen=pg.mkPen(color="yellow", width=2, style=QtCore.Qt.DashLine)  # Yellow dashed line
+        )
+        self.plot_graph.addItem(self.above_zero_line)
+
     def update_plot(self, depth):
         # Increment time by 1 second
         new_time = self.time[-1] + 1 if self.time else 0
@@ -57,9 +65,11 @@ class PlotUpdater:
         self.water_fill.setCurves(self.line, pg.PlotDataItem(self.time, [0] * len(self.time)))
         self.muddy_fill.setCurves(self.line, pg.PlotDataItem(self.time, [max_y_value] * len(self.time)))
 
+        self.above_zero_line.setPos(-self.fixed_distance)
+
         # Dynamically adjust the y-axis range, ensuring 0 is always included
         min_depth = min(self.depth)
         self.plot_graph.setYRange(
-            min(min_depth - padding, 0),  # Ensure 0 is included
-            max_y_value  # Set the upper limit to the maximum y-value
+            min(min_depth - padding, 0 - self.fixed_distance),  # Ensure y=0 and y=5 are included
+            max(max_y_value, self.fixed_distance)  # Ensure y=5 is included
         )

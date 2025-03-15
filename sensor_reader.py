@@ -12,5 +12,5 @@ class SensorReader(QtCore.QObject):
 
     def read_sensor(self):
         # Simulate sensor data (replace this with actual sensor reading logic)
-        depth = randint(5, 100)  # Random depth between 20 and 40 meters
+        depth = randint(5, 300)  # Random depth between 20 and 40 meters
         self.new_depth_data.emit(depth)  # Emit the new depth value
